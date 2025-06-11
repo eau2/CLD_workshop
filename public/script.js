@@ -20,6 +20,46 @@ const fakeDatabase = {
       unit: "loaf",
       pluralUnit: "loaves",
       stock: 5
+    },
+    {
+      id: 3,
+      name: "Free Range Eggs",
+      price: 4.99,
+      description: "Dozen free range eggs",
+      image: "https://via.placeholder.com/150",
+      unit: "dozen",
+      pluralUnit: "dozens",
+      stock: 8
+    },
+    {
+      id: 4,
+      name: "Organic Spinach",
+      price: 3.99,
+      description: "Fresh organic spinach leaves",
+      image: "https://via.placeholder.com/150",
+      unit: "bunch",
+      pluralUnit: "bunches",
+      stock: 7
+    },
+    {
+      id: 5,
+      name: "Almond Milk",
+      price: 2.49,
+      description: "Unsweetened almond milk",
+      image: "https://via.placeholder.com/150",
+      unit: "carton",
+      pluralUnit: "cartons",
+      stock: 12
+    },
+    {
+      id: 6,
+      name: "Avocados",
+      price: 1.99,
+      description: "Ripe Hass avocados",
+      image: "https://via.placeholder.com/150",
+      unit: "piece",
+      pluralUnit: "pieces",
+      stock: 15
     }
   ],
   
@@ -79,11 +119,13 @@ function renderProducts() {
 
   document.querySelectorAll('.buy-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      const productId = this.getAttribute('data-product');
+      const productId = parseInt(this.getAttribute('data-product'));
       if (fakeDatabase.decreaseStock(productId, 1)) {
         const product = fakeDatabase.products.find(p => p.id == productId);
         sendPurchaseToChatbot(product);
         renderProducts();
+      } else {
+        alert('Not enough stock available!');
       }
     });
   });
