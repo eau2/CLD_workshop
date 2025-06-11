@@ -131,58 +131,5 @@ function renderProducts() {
   });
 }
 
-function setupChatbotEvents() {
-  const dfMessenger = document.querySelector('df-messenger');
-  
-  if (!dfMessenger) {
-    console.warn('Dialogflow Messenger not found');
-    return;
-  }
-
-  // When user sends a message
-  dfMessenger.addEventListener('df-message-sent', function(event) {
-    console.log('User asked:', event.detail.message);
-  });
-
-  // When bot responds
-  dfMessenger.addEventListener('df-response-received', function(event) {
-    console.log('Bot replied:', event.detail.response);
-    
-    // Check if response contains product info
-    if (event.detail.response.queryResult.fulfillmentText.includes("product")) {
-      highlightRelevantProduct(event.detail.response.queryResult.parameters.product);
-    }
-  });
-}
-
-function sendPurchaseToChatbot(product) {
-  const dfMessenger = document.querySelector('df-messenger');
-  if (dfMessenger) {
-    const message = `I just bought ${product.name} for $${product.price.toFixed(2)}`;
-    dfMessenger.sendTextQuery(message);
-    
-    // Show purchase confirmation in chat
-    const chatContainer = dfMessenger.shadowRoot.querySelector('df-messenger-chat');
-    if (chatContainer) {
-      const confirmation = document.createElement('div');
-      confirmation.className = 'user-message';
-      confirmation.textContent = `Purchase confirmed: ${product.name}`;
-      chatContainer.appendChild(confirmation);
-    }
-  }
-}
-
-function highlightRelevantProduct(productName) {
-  const products = document.querySelectorAll('.product-card');
-  products.forEach(card => {
-    if (card.querySelector('h3').textContent.toLowerCase().includes(productName.toLowerCase())) {
-      card.style.boxShadow = '0 0 0 2px #4CAF50';
-      setTimeout(() => {
-        card.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-      }, 2000);
-    }
-  });
-}
-
 // Start after full page load
 window.addEventListener('load', init);
